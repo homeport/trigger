@@ -3,8 +3,10 @@ name: Release projects
 
 on:
   push:
+    branches:
+    - main
     paths:
-    - golang
+    - golang/Dockerfile
 
 jobs:
   repos:

@@ -1,0 +1,37 @@
+---
+name: Release projects
+
+on:
+  push:
+    paths:
+    - golang
+
+jobs:
+  repos:
+    strategy:
+      matrix:
+        repo: ["dyff", "retry", "termshot", "havener", "yft"]
+
+    runs-on: ubuntu-latest
+    steps:
+    - name: Install semver
+      run: |
+        wget -O /usr/local/bin/semver https://raw.githubusercontent.com/fsaintjacques/semver-tool/master/src/semver
+        chmod +x /usr/local/bin/semver
+        semver --version
+
+    - name: Release homeport projects
+      env:
+        GITHUB_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }}
+      run: |
+        echo -e "\\x1b[93mProcessing ${{ matrix.repo }}\\x1b[0m"
+        CURRENT_VERSION="$(gh --repo homeport/${{ matrix.repo }} release view --json tagName --jq .tagName)"
+        echo "current release tag: $CURRENT_VERSION"
+        
+        NEXT_VERSION="v$(semver bump patch "$CURRENT_VERSION")"
+        echo "bumping patch level to: $NEXT_VERSION"
+
+        echo gh --repo homeport/${{ matrix.repo }} \
+          release create "$NEXT_VERSION" \
+          --title="${{ matrix.repo }} release $NEXT_VERSION" \
+          --notes=""

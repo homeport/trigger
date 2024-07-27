@@ -1,3 +1,3 @@
 # comment (version)
 #
-FROM golang:1.22.1
+FROM golang:1.22.5

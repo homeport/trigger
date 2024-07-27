@@ -24,7 +24,7 @@ jobs:
 
     - name: Release homeport projects
       env:
-        GITHUB_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }}
+        GH_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }}
       run: |
         echo -e "\\x1b[93mProcessing ${{ matrix.repo }}\\x1b[0m"
         CURRENT_VERSION="$(gh --repo homeport/${{ matrix.repo }} release view --json tagName --jq .tagName)"

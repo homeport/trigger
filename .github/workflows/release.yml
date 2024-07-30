@@ -33,7 +33,7 @@ jobs:
         NEXT_VERSION="v$(semver bump patch "$CURRENT_VERSION")"
         echo "bumping patch level to: $NEXT_VERSION"
 
-        echo gh --repo homeport/${{ matrix.repo }} \
+        gh --repo homeport/${{ matrix.repo }} \
           release create "$NEXT_VERSION" \
           --title="${{ matrix.repo }} release $NEXT_VERSION" \
           --notes=""
